@@ -21,4 +21,4 @@ public class HelloApplication extends Application {
         launch();
     }
 }
-//jiji 爆了
+//
