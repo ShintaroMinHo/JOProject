@@ -19,5 +19,6 @@ public class EventsManagement {
     public void setName(String name){this.name = name;}
     public void setType(String type){this.type = type;}
 
-
+// zst sb
+    
 }
