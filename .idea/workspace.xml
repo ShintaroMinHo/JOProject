@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="42d7678d-ba7f-48f0-885b-83b5293c08ad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/p1/CompetitionEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/p2/EventsManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/p2/SportEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/p1/SportEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/p1/SportEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/p2/SportEvent.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +53,11 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/zhang/OneDrive/Documents/GitHub/JOProject&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="p1" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
