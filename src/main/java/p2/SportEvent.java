@@ -1,6 +1,6 @@
 package p2;
 
-public class EventsManagement {
+public class SportEvent {
     private int eventId;
     private String name;
     private String type;
@@ -19,6 +19,6 @@ public class EventsManagement {
     public void setName(String name){this.name = name;}
     public void setType(String type){this.type = type;}
 
-// zst sb
+
     
 }
