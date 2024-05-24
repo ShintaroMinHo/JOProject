@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="42d7678d-ba7f-48f0-885b-83b5293c08ad" name="Changes" comment="Add EventManager to p2">
-      <change beforePath="$PROJECT_DIR$/src/main/java/p2/EventManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/p2/EventManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/p2/ResultManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +82,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716558180422</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add EventManager to p2">
+      <option name="closed" value="true" />
+      <created>1716558465534</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1716558465534</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
