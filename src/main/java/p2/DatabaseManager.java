@@ -3,6 +3,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import UI.MedalsAnalysisUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -239,7 +240,7 @@ public class DatabaseManager {
         }
     }
 
-    
+
 
     // Main method for testing connectivity
     public static void main(String[] args) {
