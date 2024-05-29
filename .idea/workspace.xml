@@ -41,6 +41,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Application.DatabaseManager.executor&quot;: &quot;Run&quot;,
     &quot;Application.MainAPP.executor&quot;: &quot;Run&quot;,
     &quot;Application.MainUI.executor&quot;: &quot;Run&quot;,
     &quot;Maven.JOProject [clean].executor&quot;: &quot;Run&quot;,
@@ -49,7 +50,10 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/java olympic/sports/sports&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/zhang/OneDrive/桌面/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
 }</component>
   <component name="RecentsManager">
