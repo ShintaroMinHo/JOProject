@@ -15,7 +15,7 @@ import p1.SportEvent;
 public class DatabaseManager {
     private static final String URL = "jdbc:mysql://localhost:3306/olympics_management?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "Zst1117.com";
+    private static final String PASSWORD = "rengar010905";
 
     // Connect to MySQL database
     public static Connection connect() throws SQLException {
