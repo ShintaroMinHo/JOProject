@@ -141,6 +141,49 @@ public class DatabaseManager {
         }
     }
 
+    public static ObservableList<XYChart.Data<String, Number>> loadMedalCountsByNationality() {
+        ObservableList<XYChart.Data<String, Number>> medalData = FXCollections.observableArrayList();
+        String sql = "SELECT a.nationality, COUNT(r.medal) AS total FROM Results r " +
+                "JOIN Athletes a ON r.athleteId = a.id " +
+                "GROUP BY a.nationality";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String nationality = rs.getString("nationality");
+                Number count = rs.getInt("total");
+                medalData.add(new XYChart.Data<>(nationality, count));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error loading medal counts from the database: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return medalData;
+    }
+
+
+    public static ObservableList<MedalsAnalysisUI.MedalDetail> loadMedalDetails() {
+        ObservableList<MedalsAnalysisUI.MedalDetail> details = FXCollections.observableArrayList();
+        // Assume Athletes has 'name' and 'nationality', and they are joined with Results on athleteId
+        String sql = "SELECT a.name AS athleteName, a.nationality, r.medal FROM Results r " +
+                "JOIN Athletes a ON r.athleteId = a.id";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String nationality = rs.getString("nationality");
+                String athleteName = rs.getString("athleteName");
+                String medal = rs.getString("medal");
+                details.add(new MedalsAnalysisUI.MedalDetail(nationality, athleteName, medal));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error loading medal details from the database");
+            e.printStackTrace();
+        }
+        return details;
+    }
+
+
 
 
 
