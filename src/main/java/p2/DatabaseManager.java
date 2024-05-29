@@ -182,10 +182,64 @@ public class DatabaseManager {
         }
         return details;
     }
+    public static List<Result> loadResults() {
+        List<Result> results = new ArrayList<>();
+        String sql = "SELECT competitionEventId, athleteId, score, `rank`, medal FROM Results";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                results.add(new Result(
+                        rs.getInt("competitionEventId"),
+                        rs.getInt("athleteId"),
+                        rs.getDouble("score"),
+                        rs.getInt("rank"),
+                        rs.getString("medal")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error loading results from the database");
+            e.printStackTrace();
+        }
+        return results;
+    }
 
 
+    // Add a result to the database
+    public static void addResult(Result result) {
+        String sql = "INSERT INTO Results (competitionEventId, athleteId, score, `rank`, medal) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, result.getCompetitionEventId());
+            pstmt.setInt(2, result.getAthleteId());
+            pstmt.setDouble(3, result.getScore());
+            pstmt.setInt(4, result.getRank());
+            pstmt.setString(5, result.getMedal());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error adding a result to the database");
+            e.printStackTrace();
+        }
+    }
 
+    // Update a result in the database
+    public static void updateResult(Result result) {
+        String sql = "UPDATE Results SET score = ?, `rank` = ?, medal = ? WHERE competitionEventId = ? AND athleteId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, result.getScore());
+            pstmt.setInt(2, result.getRank());
+            pstmt.setString(3, result.getMedal());
+            pstmt.setInt(4, result.getCompetitionEventId());
+            pstmt.setInt(5, result.getAthleteId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating a result in the database");
+            e.printStackTrace();
+        }
+    }
 
+    
 
     // Main method for testing connectivity
     public static void main(String[] args) {
