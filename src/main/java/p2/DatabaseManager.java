@@ -1,5 +1,6 @@
 package p2;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +8,13 @@ import UI.MedalsAnalysisUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
-import p1.Athlete;
-import p1.Result;
-import p1.SportEvent;
+import p1.*;
+
 
 public class DatabaseManager {
     private static final String URL = "jdbc:mysql://localhost:3306/olympics_management?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
     private static final String USER = "root";
-    private static final String PASSWORD = "rengar010905";
+    private static final String PASSWORD = "Zst1117.com";
 
     // Connect to MySQL database
     public static Connection connect() throws SQLException {
@@ -61,6 +61,189 @@ public class DatabaseManager {
         }
     }
 
+    public static List<EventWithDateTime> loadEvents() {
+        List<EventWithDateTime> events = new ArrayList<>();
+        String sql = "SELECT competitionId, eventId, dateTime, location FROM competitionevents"; // 确保表名正确
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                int competitionId = rs.getInt("competitionId");
+                int eventId = rs.getInt("eventId");
+                LocalDateTime dateTime = rs.getTimestamp("dateTime").toLocalDateTime();
+                String location = rs.getString("location");
+                SportEvent sportEvent = findSportEventById(eventId);
+                events.add(new EventWithDateTime(sportEvent, dateTime, location));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return events;
+    }
+
+    public static List<CompetitionEvent> loadCompetitionEvents(int sportEventId) {
+        List<CompetitionEvent> competitionEvents = new ArrayList<>();
+        String sql = "SELECT c.competitionId, c.eventId, c.dateTime, c.location " +
+                "FROM competitionevents c WHERE c.eventId = ?";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, sportEventId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int competitionId = rs.getInt("competitionId");
+                    int eventId = rs.getInt("eventId");
+                    LocalDateTime dateTime = rs.getTimestamp("dateTime").toLocalDateTime();
+                    String location = rs.getString("location");
+
+                    // Load participants for this competition event
+                    List<Athlete> participants = loadParticipants(competitionId);
+
+                    // Get the SportEvent associated with this competition event
+                    SportEvent sportEvent = getSportEventById(eventId);
+
+                    competitionEvents.add(new CompetitionEvent(competitionId, sportEvent, dateTime, location, participants));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return competitionEvents;
+    }
+
+    private static List<Athlete> loadParticipants(int competitionId) {
+        List<Athlete> participants = new ArrayList<>();
+        String sql = "SELECT a.id, a.name, a.nationality, a.age, a.gender " +
+                "FROM athletes a " +
+                "JOIN competition_participants cp ON a.id = cp.athleteId " +
+                "WHERE cp.competitionId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, competitionId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    String nationality = rs.getString("nationality");
+                    int age = rs.getInt("age");
+                    String gender = rs.getString("gender");
+                    participants.add(new Athlete(id, name, nationality, age, gender,List<SportEvent> events);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participants;
+    }
+
+    private static SportEvent getSportEventById(int eventId) {
+        String sql = "SELECT eventId, name, type FROM sportevents WHERE eventId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, eventId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String name = rs.getString("name");
+                    String type = rs.getString("type");
+                    return new SportEvent(eventId, name, type);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static void addParticipantToCompetition(int competitionId, int athleteId) {
+        String sql = "INSERT INTO competition_participants (competitionId, athleteId) VALUES (?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, competitionId);
+            pstmt.setInt(2, athleteId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addCompetitionEvent(CompetitionEvent competitionEvent) {
+        String sql = "INSERT INTO competitionevents (eventId, dateTime, location) VALUES (?, ?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setInt(1, competitionEvent.getSportEvent().getEventId());
+            pstmt.setTimestamp(2, Timestamp.valueOf(competitionEvent.getDateTime()));
+            pstmt.setString(3, competitionEvent.getLocation());
+            pstmt.executeUpdate();
+
+            // Get generated competitionId
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    competitionEvent.setEventId(generatedKeys.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateCompetitionEvent(CompetitionEvent competitionEvent) {
+        String sql = "UPDATE competitionevents SET eventId = ?, dateTime = ?, location = ? WHERE competitionId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, competitionEvent.getSportEvent().getEventId());
+            pstmt.setTimestamp(2, Timestamp.valueOf(competitionEvent.getDateTime()));
+            pstmt.setString(3, competitionEvent.getLocation());
+            pstmt.setInt(4, competitionEvent.getEventId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteCompetitionEvent(int competitionId) {
+        String sql = "DELETE FROM competitionevents WHERE competitionId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, competitionId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static SportEvent findSportEventById(int eventId) {
+        List<SportEvent> sportEvents = loadSportEvents();
+        for (SportEvent event : sportEvents) {
+            if (event.getEventId() == eventId) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+    public static List<SportEvent> loadSportEvents() {
+        List<SportEvent> sportEvents = new ArrayList<>();
+        String sql = "SELECT eventId, name, type FROM sportevents";
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                int eventId = rs.getInt("eventId");
+                String name = rs.getString("name");
+                String type = rs.getString("type");
+                sportEvents.add(new SportEvent(eventId, name, type));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sportEvents;
+    }
+
     // Method to delete an athlete from the database
     public static void deleteAthlete(int id) {
         String sql = "DELETE FROM Athletes WHERE id = ?";
@@ -74,24 +257,6 @@ public class DatabaseManager {
         }
     }
 
-    public static List<SportEvent> loadEvents() {
-        List<SportEvent> events = new ArrayList<>();
-        String sql = "SELECT eventId, name, type FROM SportEvents";
-        try (Connection conn = connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                int eventId = rs.getInt("eventId");
-                String name = rs.getString("name");
-                String type = rs.getString("type");
-                events.add(new SportEvent(eventId, name, type));
-            }
-        } catch (SQLException e) {
-            System.out.println("Error loading events from the database");
-            e.printStackTrace();
-        }
-        return events;
-    }
 
     public static void addEvent(SportEvent event) {
         String sql = "INSERT INTO SportEvents (name, type) VALUES (?, ?)";
@@ -140,6 +305,8 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
+
 
     public static ObservableList<XYChart.Data<String, Number>> loadMedalCountsByNationality() {
         ObservableList<XYChart.Data<String, Number>> medalData = FXCollections.observableArrayList();
@@ -235,6 +402,19 @@ public class DatabaseManager {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error updating a result in the database");
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteResult(int competitionEventId, int athleteId) {
+        String sql = "DELETE FROM Results WHERE competitionEventId = ? AND athleteId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, competitionEventId);
+            pstmt.setInt(2, athleteId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error deleting a result from the database");
             e.printStackTrace();
         }
     }
