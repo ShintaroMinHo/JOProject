@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="42d7678d-ba7f-48f0-885b-83b5293c08ad" name="Changes" comment="Add EventManager to p2">
-      <change afterPath="$PROJECT_DIR$/src/main/java/UI/AthleteUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/UI/EventManagementUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/UI/MainUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/UI/MedalsAnalysisUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/UI/ResultManagementUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UI/MainUI.fxml" beforeDir="false" />
-    </list>
+    <list default="true" id="42d7678d-ba7f-48f0-885b-83b5293c08ad" name="Changes" comment="Add EventManager to p2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,19 +39,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.MainAPP.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainUI.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.JOProject [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.JOProject [package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Projects/sports&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MainAPP.executor": "Run",
+    "Application.MainUI.executor": "Run",
+    "Maven.JOProject [clean].executor": "Run",
+    "Maven.JOProject [package].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/java olympic/sports/sports"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="p1" />
