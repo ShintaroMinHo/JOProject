@@ -74,6 +74,76 @@ public class DatabaseManager {
         }
     }
 
+    public static List<SportEvent> loadEvents() {
+        List<SportEvent> events = new ArrayList<>();
+        String sql = "SELECT eventId, name, type FROM SportEvents";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int eventId = rs.getInt("eventId");
+                String name = rs.getString("name");
+                String type = rs.getString("type");
+                events.add(new SportEvent(eventId, name, type));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error loading events from the database");
+            e.printStackTrace();
+        }
+        return events;
+    }
+
+    public static void addEvent(SportEvent event) {
+        String sql = "INSERT INTO SportEvents (name, type) VALUES (?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, event.getName());
+            pstmt.setString(2, event.getType());
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        event.setEventId(generatedKeys.getInt(1));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error adding an event to the database");
+            e.printStackTrace();
+        }
+    }
+
+    // Method to update an event in the database
+    public static void updateEvent(SportEvent event) {
+        String sql = "UPDATE SportEvents SET name = ?, type = ? WHERE eventId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, event.getName());
+            pstmt.setString(2, event.getType());
+            pstmt.setInt(3, event.getEventId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating event in the database");
+            e.printStackTrace();
+        }
+    }
+
+    // Method to delete an event from the database
+    public static void deleteEvent(int eventId) {
+        String sql = "DELETE FROM SportEvents WHERE eventId = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, eventId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error deleting event from the database");
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     // Main method for testing connectivity
     public static void main(String[] args) {
         try {

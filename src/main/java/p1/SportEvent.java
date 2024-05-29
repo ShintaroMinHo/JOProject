@@ -12,13 +12,10 @@ public class SportEvent {
     }
     public int getEventId(){return eventId;}
     public String getName(){return name;}
-    public String geyType(){return type;}
+    public String getType(){return type;}
 
     public void setEventId(int eventId){this.eventId = eventId;}
 
     public void setName(String name){this.name = name;}
-    public void setType(String type){this.type = type;}
+    public void setType(String type){this.type = type;}}
 
-
-    
-}
